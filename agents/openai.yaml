@@ -1,0 +1,6 @@
+interface:
+  display_name: "Postline Remote Agent"
+  short_description: "Drive your home PC's Codex from your phone via Feishu"
+  long_description: "Set up and operate a phone-to-home-PC bridge: chat in Feishu/Lark, Telegram, or Slack and have a local Codex or Claude Code session do the work. Covers the postline bridge, the Feishu custom app walkthrough, Windows-specific pitfalls, routing configuration, verification gates, and background/auto-start operation."
+  category: "Developer Tools"
+  default_prompt: "Help me set up or troubleshoot remote control of my home computer's coding agent from my phone."
