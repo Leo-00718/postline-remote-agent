@@ -1,5 +1,4 @@
-# TEMPLATE - replace the path placeholders below.
-# Save as UTF-8 WITH BOM (PowerShell 5.1 misreads BOM-less UTF-8).
+﻿# TEMPLATE - replace the path placeholders. Save as UTF-8 WITH BOM.
 # Stop postline bridge + Codex worker.
 $killed = 0
 foreach ($port in 9999) {

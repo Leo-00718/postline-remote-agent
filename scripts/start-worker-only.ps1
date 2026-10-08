@@ -1,5 +1,4 @@
-# TEMPLATE - replace the path placeholders below.
-# Save as UTF-8 WITH BOM (PowerShell 5.1 misreads BOM-less UTF-8).
+﻿# TEMPLATE - replace the path placeholders. Save as UTF-8 WITH BOM.
 # Start Codex worker - keep this window open.
 $ErrorActionPreference = 'Stop'
 . "D:\path\to\postline\.secrets.ps1"

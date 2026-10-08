@@ -28,6 +28,8 @@ minutes instead of hours.
 | 4 | A message resolves a working directory only via an override prefix or a project name; there is no default | Always include a project name |
 | 5 | Project-name matching is `text.includes(name)`, so `work` also fires on `network` / `framework` | Pick a short, distinctive name |
 | 6 | A Scheduled Task gets a minimal environment; `Get-Command node` can fail there | Resolve node with an absolute-path fallback |
+| 7 | The Codex desktop app injects its `bin\<hash>` dir only into its own children, not the registry PATH, so a Scheduled-Task worker dies with `spawn codex ENOENT` | Scan `%LOCALAPPDATA%\OpenAI\Codex\bin\*\codex.exe` and prepend it to PATH |
+| 8 | postline hard-codes `-s workspace-write`, so the agent cannot write to the Desktop or Downloads | Patch the runner to pass `-c sandbox_workspace_write.writable_roots=[...]` from `CC_WORKER_WRITABLE_ROOTS` |
 
 ## Contents
 
@@ -44,7 +46,8 @@ postline-remote-agent/
     ├── stop-all.ps1                 Stop both
     ├── start-bridge-only.ps1
     ├── start-worker-only.ps1
-    └── install-autostart.ps1        Register a logon Scheduled Task
+    ├── install-autostart.ps1        Register a logon Scheduled Task
+    └── apply-writable-roots-patch.ps1   Let the agent write outside its cwd
 ```
 
 The scripts are **templates** — replace the `D:\path\to\...` placeholders and

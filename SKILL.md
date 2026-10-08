@@ -37,6 +37,21 @@ Progress is edited in place into the same IM message.
    Prefer a short distinctive name.
 6. **Auto-start needs an absolute node path.** A Scheduled Task gets a minimal
    environment; `Get-Command node` can fail there. Fall back to the known path.
+7. **Codex itself may not be on PATH.** The Codex desktop app injects its
+   `AppData\Local\OpenAI\Codex\bin\<hash>` directory into *its own* child
+   processes only - that path is NOT in the registry PATH. A worker launched
+   from a Scheduled Task therefore fails with `spawn codex ENOENT` even though
+   `codex` works fine in your terminal. Resolve the directory by scanning
+   `$env:LOCALAPPDATA\OpenAI\Codex\bin\*\codex.exe` and prepend it to PATH.
+8. **`workspace-write` blocks writes outside the worker cwd.** Asking the agent
+   to touch the Desktop or Downloads fails with a permission error. postline
+   hard-codes `-s workspace-write` and exposes no flag for it. Fix by patching
+   `packages/cli/src/cc-worker/runner.ts` to append
+   `-c sandbox_workspace_write.writable_roots=[...]` from a
+   `CC_WORKER_WRITABLE_ROOTS` env var, then rebuild. Set that env var at the
+   top level of the launcher so children inherit it - do not inline it into a
+   nested `-Command` string (`\"` is not an escape in PowerShell).
+   See `scripts/apply-writable-roots-patch.ps1`.
 ## Before building anything
 
 Confirm the user wants *their own machine* driven remotely (not a cloud agent),
